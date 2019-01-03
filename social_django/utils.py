@@ -35,6 +35,9 @@ def psa(redirect_uri=None, load_strategy=load_strategy):
             uri = redirect_uri
             if uri and not uri.startswith('/'):
                 uri = reverse(redirect_uri, args=(backend,))
+            # 因为qq互联的url后面跟斜杠会不通过校验,所以这里也只能去掉斜杠
+            if uri and uri.endswith("/"):
+                uri = uri[:-1]
             request.social_strategy = load_strategy(request)
             # backward compatibility in attribute name, only if not already
             # defined
